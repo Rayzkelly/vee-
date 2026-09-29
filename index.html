@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>For Vee, With Love ❤️</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+
+            font-family:
+                "Segoe UI",
+                Tahoma,
+                Geneva,
+                Verdana,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 50% 0%,
+                    #581c45 0%,
+                    #20091d 45%,
+                    #08030c 100%
+                );
+
+            color: white;
+            user-select: none;
+        }
+
+
+        /* =========================================
+           3D BACKGROUND
+        ========================================= */
+
+        #canvas-container {
+            position: fixed;
+            inset: 0;
+
+            width: 100vw;
+            height: 100vh;
+
+            z-index: 1;
+            pointer-events: none;
+        }
+
+
+        /* =========================================
+           MAIN UI
+        ========================================= */
+
+        .ui-layer {
+            position: relative;
+            z-index: 10;
+        }
+
+
+        /* =========================================
+           MAIN CARD
+        ========================================= */
+
+        #main-card {
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,0.10),
+                    rgba(255,255,255,0.035)
+                );
+
+            border:
+                1px solid rgba(255,160,210,0.25);
+
+            box-shadow:
+                0 0 30px rgba(244,63,94,0.15),
+                0 0 80px rgba(236,72,153,0.12),
+                inset 0 0 30px rgba(255,255,255,0.025);
+
+            animation:
+                gentlePulse 4s ease-in-out infinite;
+        }
+
+
+        @keyframes gentlePulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.012);
+            }
+        }
+
+
+        /* =========================================
+           HEART
+        ========================================= */
+
+        .big-heart {
+
+            display: inline-block;
+
+            filter:
+                drop-shadow(
+                    0 0 18px
+                    rgba(244,63,94,0.8)
+                );
+
+            animation:
+                heartbeat 1.8s ease-in-out infinite;
+        }
+
+
+        @keyframes heartbeat {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            15% {
+                transform: scale(1.13);
+            }
+
+            30% {
+                transform: scale(1);
+            }
+
+            45% {
+                transform: scale(1.08);
+            }
+        }
+
+
+        /* =========================================
+           BUTTON AREA
+        ========================================= */
+
+        #button-area {
+
+            position: relative;
+
+            width: 100%;
+            height: 180px;
+
+            margin-top: 5px;
+
+            overflow: visible !important;
+        }
+
+
+        /* =========================================
+           YES BUTTON
+        ========================================= */
+
+        #yes-btn {
+
+            position: absolute;
+
+            left: 28%;
+            top: 50%;
+
+            transform:
+                translate(-50%, -50%)
+                scale(1);
+
+            z-index: 30;
+
+            white-space: nowrap;
+
+            padding:
+                15px 30px;
+
+            font-size: 20px;
+            font-weight: 700;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ec4899,
+                    #f43f5e
+                );
+
+            border:
+                1px solid
+                rgba(255,255,255,0.25);
+
+            border-radius: 999px;
+
+            box-shadow:
+                0 8px 30px
+                rgba(244,63,94,0.35);
+
+            cursor: pointer;
+
+            transition:
+                transform .3s ease,
+                box-shadow .3s ease;
+        }
+
+
+        #yes-btn:hover {
+
+            box-shadow:
+                0 10px 45px
+                rgba(244,63,94,0.65);
+        }
+
+
+        /* =========================================
+           NO BUTTON
+           
+           IMPORTANT:
+           This button is deliberately positioned
+           inside the button area from the beginning.
+        ========================================= */
+
+        #no-btn {
+
+            position: absolute !important;
+
+            left: 72% !important;
+            top: 50% !important;
+
+            transform:
+                translate(-50%, -50%)
+                scale(1);
+
+            z-index: 999 !important;
+
+            display: block !important;
+
+            visibility: visible !important;
+
+            opacity: 1 !important;
+
+            white-space: nowrap;
+
+            padding:
+                14px 27px;
+
+            font-size: 18px;
+            font-weight: 600;
+
+            color: #fbcfe8 !important;
+
+            background:
+                rgba(88,28,69,0.95) !important;
+
+            border:
+                2px solid
+                #f472b6 !important;
+
+            border-radius: 999px;
+
+            box-shadow:
+                0 0 18px
+                rgba(244,114,182,0.25);
+
+            cursor: pointer;
+
+            touch-action: none;
+
+            transition:
+                left .20s
+                cubic-bezier(
+                    .175,
+                    .885,
+                    .32,
+                    1.275
+                ),
+
+                top .20s
+                cubic-bezier(
+                    .175,
+                    .885,
+                    .32,
+                    1.275
+                ),
+
+                transform .20s ease;
+        }
+
+
+        /* =========================================
+           FLOATING HEARTS
+        ========================================= */
+
+        .heart {
+
+            position: fixed;
+
+            bottom: -40px;
+
+            pointer-events: none;
+
+            z-index: 3;
+
+            opacity: 0;
+
+            animation:
+                floatUp linear forwards;
+        }
+
+
+        @keyframes floatUp {
+
+            0% {
+
+                transform:
+                    translateY(0)
+                    scale(.7)
+                    rotate(0deg);
+
+                opacity: 0;
+            }
+
+            15% {
+                opacity: .8;
+            }
+
+            80% {
+                opacity: .5;
+            }
+
+            100% {
+
+                transform:
+                    translateY(-110vh)
+                    scale(1.3)
+                    rotate(25deg);
+
+                opacity: 0;
+            }
+        }
+
+
+        /* =========================================
+           SPARKLES
+        ========================================= */
+
+        .sparkle {
+
+            position: fixed;
+
+            pointer-events: none;
+
+            z-index: 4;
+
+            color: #fff;
+
+            animation:
+                sparkleFade 2s ease-out forwards;
+        }
+
+
+        @keyframes sparkleFade {
+
+            0% {
+                transform:
+                    scale(0)
+                    rotate(0deg);
+
+                opacity: 0;
+            }
+
+            30% {
+                opacity: 1;
+            }
+
+            100% {
+
+                transform:
+                    scale(1.5)
+                    rotate(180deg);
+
+                opacity: 0;
+            }
+        }
+
+
+        /* =========================================
+           LOVE NOTE
+        ========================================= */
+
+        .love-note {
+
+            color:
+                rgba(255,210,230,.75);
+
+            font-size: .82rem;
+
+            font-style: italic;
+
+            letter-spacing: .03em;
+
+            margin-top: 8px;
+        }
+
+
+        /* =========================================
+           ESCAPE BAR
+        ========================================= */
+
+        #escape-bar {
+
+            width: 100%;
+
+            height: 4px;
+
+            margin-top: 12px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(255,255,255,.07);
+
+            overflow: hidden;
+        }
+
+
+        #escape-progress {
+
+            width: 0%;
+
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #fb7185,
+                    #f472b6,
+                    #c084fc
+                );
+
+            border-radius: 20px;
+
+            transition:
+                width .35s ease;
+        }
+
+
+        /* =========================================
+           SUCCESS MODAL
+        ========================================= */
+
+        #success-modal {
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    rgba(120,20,80,.55),
+                    rgba(8,3,12,.97) 70%
+                );
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media(max-width:500px) {
+
+            #main-card {
+                padding: 24px;
+            }
+
+            #button-area {
+                height: 190px;
+            }
+
+            #yes-btn {
+
+                left: 27%;
+
+                padding:
+                    13px 22px;
+
+                font-size: 17px;
+            }
+
+            #no-btn {
+
+                left: 73% !important;
+
+                padding:
+                    12px 20px;
+
+                font-size: 16px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     THREE.JS BACKGROUND
+========================================= -->
+
+<div id="canvas-container"></div>
+
+
+<!-- =========================================
+     MAIN CARD
+========================================= -->
+
+<main
+    id="main-card"
+    class="
+        ui-layer
+        max-w-md
+        w-full
+        mx-4
+        p-8
+        rounded-[2rem]
+        text-center
+        relative
+    "
+>
+
+
+    <!-- HEART -->
+
+    <div
+        class="
+            big-heart
+            text-7xl
+            mb-5
+        "
+    >
+        💗
+    </div>
+
+
+    <!-- INTRO -->
+
+    <p
+        class="
+            text-pink-200/70
+            text-sm
+            tracking-widest
+            uppercase
+            mb-3
+        "
+    >
+        A little question from my heart
+    </p>
+
+
+    <!-- NAME -->
+
+    <h1
+        class="
+            text-4xl
+            font-extrabold
+            text-transparent
+            bg-clip-text
+            bg-gradient-to-r
+            from-pink-300
+            via-rose-400
+            to-fuchsia-400
+            mb-4
+        "
+    >
+        Hey Vee... 🌷
+    </h1>
+
+
+    <!-- MESSAGE -->
+
+    <p
+        class="
+            text-pink-100/80
+            text-lg
+            leading-relaxed
+            mb-5
+        "
+    >
+
+        Some questions are easy to ask...
+
+        <br>
+
+        but there's one I've been
+        <br>
+
+        <strong class="text-pink-200">
+            wanting to ask you for a while.
+        </strong>
+
+    </p>
+
+
+    <!-- DIVIDER -->
+
+    <div
+        class="
+            flex
+            items-center
+            justify-center
+            gap-3
+            mb-6
+        "
+    >
+
+        <span class="text-pink-400/40">
+            ♡
+        </span>
+
+        <div
+            class="
+                h-px
+                w-16
+                bg-gradient-to-r
+                from-transparent
+                via-pink-400/40
+                to-transparent
+            "
+        ></div>
+
+        <span class="text-pink-300">
+            ✨
+        </span>
+
+        <div
+            class="
+                h-px
+                w-16
+                bg-gradient-to-r
+                from-transparent
+                via-pink-400/40
+                to-transparent
+            "
+        ></div>
+
+        <span class="text-pink-400/40">
+            ♡
+        </span>
+
+    </div>
+
+
+    <!-- QUESTION -->
+
+    <h2
+        class="
+            text-2xl
+            font-bold
+            text-white
+            mb-2
+        "
+    >
+        Vee...
+    </h2>
+
+
+    <p
+        class="
+            text-2xl
+            font-semibold
+            text-pink-200
+            mb-4
+        "
+    >
+        Will you be my girlfriend? 🌹
+    </p>
+
+
+    <!-- BUTTON AREA -->
+
+    <div id="button-area">
+
+
+        <!-- YES -->
+
+        <button id="yes-btn">
+            Yes... ❤️
+        </button>
+
+
+        <!-- NO -->
+
+        <button id="no-btn">
+            No 🙈
+        </button>
+
+
+    </div>
+
+
+    <!-- STATUS -->
+
+    <p
+        id="escape-message"
+        class="love-note"
+    >
+        The little "No" button is feeling shy... 🙈
+    </p>
+
+
+    <div id="escape-bar">
+
+        <div id="escape-progress"></div>
+
+    </div>
+
+
+</main>
+
+
+<!-- =========================================
+     SUCCESS SCREEN
+========================================= -->
+
+<div
+    id="success-modal"
+    class="
+        ui-layer
+        fixed
+        inset-0
+        flex
+        items-center
+        justify-center
+        hidden
+        opacity-0
+        transition-opacity
+        duration-1000
+    "
+>
+
+
+    <div
+        class="
+            text-center
+            p-8
+            max-w-lg
+        "
+    >
+
+
+        <div
+            class="
+                text-8xl
+                mb-6
+                big-heart
+            "
+        >
+            💞
+        </div>
+
+
+        <p
+            class="
+                text-pink-300
+                tracking-[.3em]
+                uppercase
+                text-sm
+                mb-4
+            "
+        >
+            It's official ✨
+        </p>
+
+
+        <h1
+            class="
+                text-5xl
+                font-black
+                text-transparent
+                bg-clip-text
+                bg-gradient-to-r
+                from-pink-300
+                via-rose-400
+                to-fuchsia-400
+                mb-5
+            "
+        >
+            You Said YES! 💕
+        </h1>
+
+
+        <p
+            class="
+                text-xl
+                text-pink-100/90
+                leading-relaxed
+                mb-7
+            "
+        >
+
+            And somehow...
+
+            <br>
+
+            you just made this little page
+            <br>
+
+            <strong>
+                very, very happy. 🌷
+            </strong>
+
+        </p>
+
+
+        <!-- LOVE MESSAGE -->
+
+        <div
+            class="
+                p-6
+                rounded-3xl
+                bg-white/5
+                border
+                border-pink-300/10
+                backdrop-blur
+            "
+        >
+
+            <p
+                class="
+                    text-pink-200
+                    text-lg
+                    italic
+                "
+            >
+                "Some stories begin with
+                <br>
+                a simple question..."
+            </p>
+
+
+            <p
+                class="
+                    text-2xl
+                    font-bold
+                    text-white
+                    mt-3
+                "
+            >
+                Ours begins here. ❤️
+            </p>
+
+        </div>
+
+
+        <p
+            id="final-message"
+            class="
+                text-pink-200/60
+                text-sm
+                mt-7
+            "
+        >
+            Forever looks kinda cute from here. ✨
+        </p>
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+/* =========================================
+   THREE.JS BACKGROUND
+========================================= */
+
+const container =
+    document.getElementById(
+        "canvas-container"
+    );
+
+
+const scene =
+    new THREE.Scene();
+
+
+scene.fog =
+    new THREE.FogExp2(
+        0x10040f,
+        0.018
+    );
+
+
+const camera =
+    new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth /
+        window.innerHeight,
+        0.1,
+        1000
+    );
+
+
+camera.position.z = 30;
+
+
+const renderer =
+    new THREE.WebGLRenderer({
+
+        antialias: true,
+
+        alpha: true
+    });
+
+
+renderer.setSize(
+    window.innerWidth,
+    window.innerHeight
+);
+
+
+renderer.setPixelRatio(
+    Math.min(
+        window.devicePixelRatio,
+        2
+    )
+);
+
+
+container.appendChild(
+    renderer.domElement
+);
+
+
+/* LIGHTS */
+
+scene.add(
+    new THREE.AmbientLight(
+        0xffffff,
+        0.65
+    )
+);
+
+
+const pinkLight =
+    new THREE.PointLight(
+        0xff4f9a,
+        2.5,
+        100
+    );
+
+
+pinkLight.position.set(
+    10,
+    10,
+    10
+);
+
+
+scene.add(
+    pinkLight
+);
+
+
+const purpleLight =
+    new THREE.PointLight(
+        0xc084fc,
+        2,
+        100
+    );
+
+
+purpleLight.position.set(
+    -10,
+    -10,
+    -10
+);
+
+
+scene.add(
+    purpleLight
+);
+
+
+/* PARTICLES */
+
+const items = [];
+
+
+const geometry =
+    new THREE.OctahedronGeometry(
+        1,
+        0
+    );
+
+
+for (
+    let i = 0;
+    i < 65;
+    i++
+) {
+
+    const material =
+        new THREE.MeshPhongMaterial({
+
+            color:
+                Math.random() > 0.5
+                    ? 0xff4f9a
+                    : 0xc084fc,
+
+            shininess: 100,
+
+            transparent: true,
+
+            opacity: 0.55,
+
+            wireframe:
+                Math.random() > 0.65
+        });
+
+
+    const mesh =
+        new THREE.Mesh(
+            geometry,
+            material
+        );
+
+
+    mesh.position.set(
+
+        (Math.random() - 0.5) * 60,
+
+        (Math.random() - 0.5) * 60,
+
+        (Math.random() - 0.5) * 40
+
+    );
+
+
+    const scale =
+        Math.random() * 1.3 + 0.4;
+
+
+    mesh.scale.set(
+        scale,
+        scale,
+        scale
+    );
+
+
+    mesh.userData = {
+
+        rx:
+            (Math.random() - 0.5)
+            * 0.018,
+
+        ry:
+            (Math.random() - 0.5)
+            * 0.018
+    };
+
+
+    scene.add(mesh);
+
+    items.push(mesh);
+}
+
+
+/* ANIMATION */
+
+function animate() {
+
+    requestAnimationFrame(
+        animate
+    );
+
+
+    items.forEach(
+        item => {
+
+            item.rotation.x +=
+                item.userData.rx;
+
+            item.rotation.y +=
+                item.userData.ry;
+
+        }
+    );
+
+
+    renderer.render(
+        scene,
+        camera
+    );
+}
+
+
+animate();
+
+
+/* RESIZE */
+
+window.addEventListener(
+    "resize",
+    () => {
+
+        camera.aspect =
+            window.innerWidth /
+            window.innerHeight;
+
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(
+            window.innerWidth,
+            window.innerHeight
+        );
+
+    }
+);
+
+
+/* =========================================
+   FLOATING HEARTS
+========================================= */
+
+const heartTypes = [
+
+    "♡",
+    "♥",
+    "💗",
+    "💖",
+    "💕",
+    "✨"
+
+];
+
+
+function createHeart() {
+
+    const heart =
+        document.createElement(
+            "div"
+        );
+
+
+    heart.className =
+        "heart";
+
+
+    heart.innerText =
+        heartTypes[
+            Math.floor(
+                Math.random() *
+                heartTypes.length
+            )
+        ];
+
+
+    heart.style.left =
+        Math.random() * 100 + "vw";
+
+
+    heart.style.fontSize =
+        Math.random() * 18 + 12 + "px";
+
+
+    heart.style.color =
+        Math.random() > 0.5
+            ? "#fb7185"
+            : "#f9a8d4";
+
+
+    const duration =
+        Math.random() * 7 + 7;
+
+
+    heart.style.animationDuration =
+        duration + "s";
+
+
+    document.body.appendChild(
+        heart
+    );
+
+
+    setTimeout(
+        () => heart.remove(),
+        duration * 1000
+    );
+}
+
+
+setInterval(
+    createHeart,
+    700
+);
+
+
+/* =========================================
+   SPARKLES
+========================================= */
+
+function createSparkle() {
+
+    const sparkle =
+        document.createElement(
+            "div"
+        );
+
+
+    sparkle.className =
+        "sparkle";
+
+
+    sparkle.innerText =
+        "✦";
+
+
+    sparkle.style.left =
+        Math.random() * 100 + "vw";
+
+
+    sparkle.style.top =
+        Math.random() * 100 + "vh";
+
+
+    sparkle.style.fontSize =
+        Math.random() * 12 + 8 + "px";
+
+
+    document.body.appendChild(
+        sparkle
+    );
+
+
+    setTimeout(
+        () => sparkle.remove(),
+        2000
+    );
+}
+
+
+setInterval(
+    createSparkle,
+    500
+);
+
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+const noBtn =
+    document.getElementById(
+        "no-btn"
+    );
+
+
+const yesBtn =
+    document.getElementById(
+        "yes-btn"
+    );
+
+
+const buttonArea =
+    document.getElementById(
+        "button-area"
+    );
+
+
+const escapeProgress =
+    document.getElementById(
+        "escape-progress"
+    );
+
+
+const escapeMessage =
+    document.getElementById(
+        "escape-message"
+    );
+
+
+let attempts = 0;
+
+let noScale = 1;
+
+
+/* =========================================
+   ROMANTIC MESSAGES
+========================================= */
+
+const messages = [
+
+    "The little No button is feeling shy... 🙈",
+
+    "Aww... don't run away! 🥺",
+
+    "The button knows the answer already. 💗",
+
+    "You're making it nervous... 😂",
+
+    "It really doesn't want to say no. 🌷",
+
+    "Okay... it's playing hard to get. 😭",
+
+    "YES is looking kinda cute though... 👀❤️",
+
+    "Maybe the universe is trying to tell you something... ✨",
+
+    "Okay Vee... catch me if you can! 🏃💨",
+
+    "Just say YES already. 🥹💕"
+
+];
+
+
+/* =========================================
+   DODGE BUTTON
+========================================= */
+
+function dodgeButton(event) {
+
+    if (event) {
+        event.preventDefault();
+    }
+
+
+    attempts++;
+
+
+    const areaWidth =
+        buttonArea.clientWidth;
+
+
+    const areaHeight =
+        buttonArea.clientHeight;
+
+
+    const buttonWidth =
+        noBtn.offsetWidth;
+
+
+    const buttonHeight =
+        noBtn.offsetHeight;
+
+
+    /*
+       Keep the button completely
+       inside the button area.
+    */
+
+    const padding = 5;
+
+
+    const maxX =
+        Math.max(
+            padding,
+            areaWidth -
+            buttonWidth -
+            padding
+        );
+
+
+    const maxY =
+        Math.max(
+            padding,
+            areaHeight -
+            buttonHeight -
+            padding
+        );
+
+
+    const newX =
+        Math.random() *
+        maxX;
+
+
+    const newY =
+        Math.random() *
+        maxY;
+
+
+    noScale =
+        Math.max(
+            0.55,
+            noScale - 0.04
+        );
+
+
+    noBtn.style.left =
+        newX + "px";
+
+
+    noBtn.style.top =
+        newY + "px";
+
+
+    noBtn.style.transform =
+        `scale(${noScale})`;
+
+
+    /* Change text */
+
+    noBtn.innerText =
+        messages[
+            attempts %
+            messages.length
+        ];
+
+
+    /*
+       YES becomes slightly bigger.
+    */
+
+    const yesScale =
+        Math.min(
+            1 + attempts * 0.035,
+            1.35
+        );
+
+
+    yesBtn.style.transform =
+        `
+        translate(-50%, -50%)
+        scale(${yesScale})
+        `;
+
+
+    /* Progress bar */
+
+    escapeProgress.style.width =
+        Math.min(
+            attempts * 7,
+            100
+        ) + "%";
+
+
+    /* Status */
+
+    escapeMessage.innerText =
+        messages[
+            attempts %
+            messages.length
+        ];
+
+
+    /* Sparkles */
+
+    for (
+        let i = 0;
+        i < 3;
+        i++
+    ) {
+
+        setTimeout(
+            createSparkle,
+            i * 60
+        );
+
+    }
+}
+
+
+/* Desktop */
+
+noBtn.addEventListener(
+    "mouseenter",
+    dodgeButton
+);
+
+
+/* Mobile */
+
+noBtn.addEventListener(
+    "touchstart",
+    dodgeButton,
+    {
+        passive: false
+    }
+);
+
+
+/* =========================================
+   YES BUTTON
+========================================= */
+
+yesBtn.addEventListener(
+    "click",
+    () => {
+
+
+        /* CONFETTI */
+
+        confetti({
+
+            particleCount: 180,
+
+            spread: 130,
+
+            startVelocity: 45,
+
+            origin: {
+                x: 0.5,
+                y: 0.55
+            }
+
+        });
+
+
+        /* SECOND BURST */
+
+        setTimeout(
+            () => {
+
+                confetti({
+
+                    particleCount: 120,
+
+                    spread: 100,
+
+                    origin: {
+                        x: 0.5,
+                        y: 0.4
+                    }
+
+                });
+
+            },
+            350
+        );
+
+
+        /* HEART BURST */
+
+        for (
+            let i = 0;
+            i < 25;
+            i++
+        ) {
+
+            setTimeout(
+                createHeart,
+                i * 50
+            );
+
+        }
+
+
+        /* FINAL MESSAGE */
+
+        const finalMessage =
+            document.getElementById(
+                "final-message"
+            );
+
+
+        if (attempts === 0) {
+
+            finalMessage.innerText =
+                "You didn't even hesitate. 🥹❤️";
+
+        }
+
+        else if (attempts < 5) {
+
+            finalMessage.innerText =
+                "A few escapes... but your heart knew the answer. 💕";
+
+        }
+
+        else {
+
+            finalMessage.innerText =
+                "After all that running... you finally admitted it. 😂❤️";
+
+        }
+
+
+        /* HIDE MAIN CARD */
+
+        const mainCard =
+            document.getElementById(
+                "main-card"
+            );
+
+
+        mainCard.style.animation =
+            "none";
+
+
+        mainCard.classList.add(
+            "scale-0",
+            "opacity-0"
+        );
+
+
+        /* SHOW SUCCESS */
+
+        setTimeout(
+            () => {
+
+                const modal =
+                    document.getElementById(
+                        "success-modal"
+                    );
+
+
+                modal.classList.remove(
+                    "hidden"
+                );
+
+
+                setTimeout(
+                    () => {
+
+                        modal.classList.remove(
+                            "opacity-0"
+                        );
+
+                    },
+                    50
+                );
+
+            },
+            500
+        );
+
+    }
+);
+
+</script>
+
+</body>
+
+</html>
